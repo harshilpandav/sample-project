@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f2ec" />
+    <title>Daymark | Small steps, clearly kept</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail" aria-label="Main navigation">
+        <a class="brand" href="#today" aria-label="Daymark home">d.</a>
+        <nav>
+          <a class="rail-link active" href="#today" aria-label="Today" title="Today">◷</a>
+          <a class="rail-link" href="#all" aria-label="All tasks" title="All tasks">▤</a>
+        </nav>
+        <span class="rail-date" id="rail-date"></span>
+      </aside>
+      <main class="workspace">
+        <header class="topline">
+          <p class="eyebrow">WEDNESDAY, OCTOBER 7</p>
+          <span class="saved-indicator"><span></span> All changes saved</span>
+        </header>
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">YOUR PERSONAL FIELD NOTES</p>
+            <h1 id="page-title">Make room for<br /><em>what matters.</em></h1>
+          </div>
+          <p class="intro-note">A little progress, honestly recorded, adds up.</p>
+        </section>
+        <section class="task-section" aria-labelledby="tasks-heading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">THE DAY, IN VIEW</p>
+              <h2 id="tasks-heading">Today <span id="task-count">0</span></h2>
+            </div>
+            <div class="filters" role="group" aria-label="Filter tasks">
+              <button class="filter-button selected" data-filter="all" type="button">All</button>
+              <button class="filter-button" data-filter="open" type="button">Open</button>
+              <button class="filter-button" data-filter="done" type="button">Done</button>
+            </div>
+          </div>
+          <form class="add-form" id="add-form">
+            <label class="sr-only" for="new-task">Add a task</label>
+            <input id="new-task" name="task" autocomplete="off" placeholder="Add something worth doing..." required />
+            <button type="submit" aria-label="Add task">+</button>
+          </form>
+          <ul class="task-list" id="task-list" aria-label="Tasks"></ul>
+          <p class="empty-state" id="empty-state" hidden>Nothing here yet. Add one small thing to begin.</p>
+          <footer class="list-footer"><span id="open-count">0</span> open <span class="footer-divider">/</span> <span id="done-count">0</span> done</footer>
+        </section>
+      </main>
+      <aside class="side-note" aria-label="Daily note">
+        <div class="note-mark">✳</div>
+        <p class="eyebrow">A THOUGHT FOR TODAY</p>
+        <blockquote>“The secret of getting ahead is getting started.”</blockquote>
+        <p class="note-author">MARK TWAIN</p>
+        <div class="note-rule"></div>
+        <p class="note-small">Start where you are.<br />Use what you have.<br />Do what you can.</p>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
