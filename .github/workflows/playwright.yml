@@ -1,8 +1,19 @@
-name: Playwright tests
-
 on:
   push:
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      testdino_rerun_from:
+        required: true
+      testdino_rerun_scope:
+        default: failed
+      testdino_rerun_test_ids:
+        required: false
+      testdino_rerun_exclude_ids:
+        required: false
+      testdino_rerun_sha:
+        required: false
+      testdino_rerun_tags:
+        required: false
 
 jobs:
   test:
@@ -10,16 +21,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ inputs.testdino_rerun_sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-      - name: Run tests with TestDino
+          node-version: 22
+      - run: npm ci
+      - name: Run tests
         env:
           TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
-        run: npx playwright test
+          TD_RERUN_FROM: ${{ inputs.testdino_rerun_from }}
+          TD_RERUN_SCOPE: ${{ inputs.testdino_rerun_scope }}
+          TD_RERUN_TEST_IDS: ${{ inputs.testdino_rerun_test_ids }}
+          TD_RERUN_EXCLUDE_IDS: ${{ inputs.testdino_rerun_exclude_ids }}
+          TD_RERUN_TAGS: ${{ inputs.testdino_rerun_tags }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$TD_RERUN_FROM" ]; then
+            args+=(--rerun "${TD_RERUN_SCOPE:-failed}" --from-run "$TD_RERUN_FROM")
+            if [ -n "$TD_RERUN_TEST_IDS" ]; then
+              args+=(--test-ids "$TD_RERUN_TEST_IDS")
+            fi
+            if [ -n "$TD_RERUN_EXCLUDE_IDS" ]; then
+              args+=(--exclude-ids "$TD_RERUN_EXCLUDE_IDS")
+            fi
+            if [ -n "$TD_RERUN_TAGS" ]; then
+              args+=(--rerun-tags "$TD_RERUN_TAGS")
+            fi
+          fi
+          npx tdpw test "${args[@]}"
